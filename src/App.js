@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-         <code> wellome to devops</code> and save to reload.
+         <code> wellome to devops</code> from webhook
         </p>
         <a
           className="App-link"
