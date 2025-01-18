@@ -1,9 +1,9 @@
-name: Deploy static content to Pages
+name: Deploy React App to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
+    branches: ["main"]  # Trigger on push to the main branch
+  workflow_dispatch:    # Allow manual triggering
 
 permissions:
   contents: read
@@ -15,27 +15,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Move build folder contents to root
-        run: |
-          # Move the contents of the build folder to the root
-          mv build/* .
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18  # Use the Node.js version your project requires
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Install dependencies
+        run: npm install
 
-      - name: Upload artifact
+      - name: Build React app
+        run: npm run build  # This generates the `build` folder
+
+      - name: Upload build folder as artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: build/  # Upload the contents of the `build` folder
 
       - name: Deploy to GitHub Pages
         id: deployment
