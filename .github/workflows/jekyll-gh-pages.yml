@@ -33,13 +33,8 @@ jobs:
       - name: Build React app
         run: npm run build  # This generates the `build` folder
 
-      - name: Install serve globally
-        run: npm install -g serve
-
-      - name: Serve build folder (for testing)
-        run: serve -s build &  # Run serve in the background
-        env:
-          PORT: 3000  # Optional: Specify a port
+      - name: Add 404.html for client-side routing
+        run: cp build/index.html build/404.html  # Fixes routing issues on GitHub Pages
 
       - name: Upload build folder as artifact
         uses: actions/upload-pages-artifact@v3
